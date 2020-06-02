@@ -7,7 +7,7 @@ git:
 
 branches:
   only:
-    - develop
+    - master
 
 install:
   - pip install -r requirements.txt
@@ -19,4 +19,4 @@ deploy:
   provider: script
   script: pip install pysftp && python tools/deploy.py
   on:
-    branch: develop
+    branch: master
