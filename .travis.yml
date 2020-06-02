@@ -19,4 +19,4 @@ deploy:
   provider: script
   script: python3 tools/deploy.py
   on:
-    branch: master
+    branch: develop
