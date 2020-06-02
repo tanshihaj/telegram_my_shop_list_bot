@@ -14,6 +14,16 @@ password = os.environ['DEPLOY_HOST_SFTP_PASSWORD']
 cnopts = pysftp.CnOpts()
 cnopts.hostkeys = None
 
+
+def rmdir_recurse(client, path):
+    for item in client.listdir(remotepath=path):
+        subpath = path + '/' + item
+        if client.isdir(subpath):
+            rmdir_recurse(client, subpath)
+        else:
+            client.remove(subpath)
+    client.rmdir(path)
+
 with pysftp.Connection(host, username=username, password=password, cnopts=cnopts) as sftp:
     src_dir = os.environ['TRAVIS_BUILD_DIR']
     dst_dir = os.environ['DEPLOY_HOST_PATH']
@@ -24,7 +34,10 @@ with pysftp.Connection(host, username=username, password=password, cnopts=cnopts
         for item in sftp.listdir():
             if item == 'logs' or item == 'secrets.json':
                 continue
-            sftp.remove(item)
+            if sftp.isdir(item):
+                rmdir_recurse(sftp, item)
+            else:
+                sftp.remove(item)
 
         # upload new code
         sftp.put(src_dir + '/data_model.py')
