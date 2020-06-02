@@ -23,6 +23,9 @@ class ApiHandler(BaseHTTPRequestHandler):
             response['result'] = {'message_id': 1}
         self.wfile.write(bytes(json.dumps(response), 'ascii'))
 
+    def log_message(self, format, *args):
+        return
+
 def get_free_port():
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
         s.bind(('', 0))

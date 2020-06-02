@@ -14,3 +14,9 @@ install:
 
 script:
   - python3 test/request_handler_test.py
+
+deploy:
+  provider: script
+  script: python3 tools/deploy.py
+  on:
+    branch: master
