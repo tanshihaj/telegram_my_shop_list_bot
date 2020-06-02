@@ -17,6 +17,6 @@ script:
 
 deploy:
   provider: script
-  script: python3 tools/deploy.py
+  script: pip install pysftp && python tools/deploy.py
   on:
     branch: develop
