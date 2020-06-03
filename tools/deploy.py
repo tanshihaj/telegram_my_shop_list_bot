@@ -45,4 +45,13 @@ with pysftp.Connection(host, username=username, password=password, cnopts=cnopts
         sftp.put(src_dir + '/request_handler.py')
         sftp.put(src_dir + '/settings.py')
 
+        # create 'logs' folder if it not exists
+        if not sftp.exists('logs'):
+            sftp.mkdir('logs')
+
+        # tell the passanger to restart app by creating tmp/restart
+        sftp.mkdir('tmp')
+        with sftp.cd('tmp'):
+            sftp.open('restart.txt', 'w')
+
 print('Deploy finished successfully')
